@@ -921,7 +921,7 @@ FUNCTION(TRIBITS_GENERATE_SINGLE_REPO_VERSION_STRING  GIT_REPO_DIR
   )
 
   IF (NOT GIT_EXEC)
-    MESSAGE(SEND_ERROR "ERROR, the program '${GIT_NAME}' could not be found!"
+    MESSAGE(SEND_ERROR "ERROR, the program git could not be found!"
       "  We can not generate the repo version file!")
   ENDIF()
 
@@ -1085,7 +1085,18 @@ FUNCTION(TRIBITS_GENERATE_REPO_VERSION_OUTPUT_AND_FILE_AND_INSTALL)
     IF (PROJECT_SOURCE_IS_GIT_REPO)
       # Find git first here so we  don't have to find it in called function so
       # it can be unit tested.
-      FIND_PROGRAM(GIT_EXEC ${GIT_NAME})
+      FIND_PROGRAM(GIT_EXEC git)
+
+      #If git was not found and the OS is Windows try again with some hints
+      IF(NOT GIT_EXEC AND WIN32)
+        FIND_PROGRAM(
+          GIT_EXEC git.exe
+          HINTS
+            "C:/Program Files/Git/bin"
+            "C:/Program Files (x86)/Git/bin"
+        )
+      ENDIF()
+
       # Get repo versions, print to stdout and write file
       TRIBITS_GENERATE_REPO_VERSION_OUTPUT_AND_FILE()
       # Add install target for this file

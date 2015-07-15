@@ -77,14 +77,3 @@ SET(${PROJECT_NAME}_CDASH_SUBPROJECT_DEPS_XML_FILE_NAME CDashSubprojectDependenc
 SET(${PROJECT_NAME}_PACKAGE_DEPS_TABLE_HTML_FILE_NAME ${PROJECT_NAME}PackageDependenciesTable.html)
 
 SET(${PROJECT_NAME}_PACKAGE_DEPS_FILES_DIR "cmake/dependencies")
-
-# Other stuff
-
-IF(WIN32)
-  #Apparently FIND_PROGRAM looks for an exact match of the file name.
-  #So even though "git clone ..." is valid to use on windows we need to give the
-  #full name of the command we want to run.
-  SET(GIT_NAME git.cmd)
-ELSE(WIN32)
-  SET(GIT_NAME git)
-ENDIF(WIN32)
